@@ -5,6 +5,7 @@ import sys
 
 
 class MLOGGER:
+
     @staticmethod
     def get_logger(name):
         if not name:
@@ -15,7 +16,8 @@ class MLOGGER:
     def __create_stream_handler(level):
         handler = StreamHandler()
         handler.setLevel(level)
-        handler.setFormatter(Formatter('%(asctime)s - %(levelname)s - %(instance_id)s - %(message)s','%Y-%m-%d %H:%M:%S'))
+        handler.setFormatter(
+            Formatter('%(asctime)s - %(levelname)s - %(instance_id)s - %(message)s', '%Y-%m-%d %H:%M:%S'))
         return handler
 
     @staticmethod
@@ -23,10 +25,11 @@ class MLOGGER:
         filename_path = str(os.path.dirname(os.path.realpath(__file__))) + '/' + str(filename)
         fileHandler = FileHandler(filename_path, mode='w')
         fileHandler.setLevel(level)
-        fileHandler.setFormatter(Formatter('%(asctime)s - %(levelname)s - %(instance_id)s - %(message)s','%Y-%m-%d %H:%M:%S'))
+        fileHandler.setFormatter(
+            Formatter('%(asctime)s - %(levelname)s - %(instance_id)s - %(message)s', '%Y-%m-%d %H:%M:%S'))
         return fileHandler
 
-    def __init__(self, name, level = INFO, logtype = 'CONSOLE', filename = None):
+    def __init__(self, name, level=INFO, logtype='CONSOLE', filename=None):
         # logtype  : {'CONSOLE', 'FILE', 'BOTH', 'NONE'}
         # level : {INFO, DEBUG, ERROR}
         self.user_variables = {}
@@ -35,16 +38,16 @@ class MLOGGER:
         self.logger.setLevel(level)
         if logtype == 'CONSOLE':
             self.logger.addHandler(MLOGGER.__create_stream_handler(level))
-        elif logtype == 'FILE' :
+        elif logtype == 'FILE':
             if filename is not None:
-                self.logger.addHandler(MLOGGER.__create_file_handler(level,filename))
+                self.logger.addHandler(MLOGGER.__create_file_handler(level, filename))
             else:
                 raise ValueError('filename cannot be empty')
                 sys.exit()
         elif logtype == 'BOTH':
             self.logger.addHandler(MLOGGER.__create_stream_handler(level))
             if filename is not None:
-                self.logger.addHandler(MLOGGER.__create_file_handler(level,filename))
+                self.logger.addHandler(MLOGGER.__create_file_handler(level, filename))
             else:
                 raise ValueError('filename cannot be empty')
                 sys.exit()
@@ -69,8 +72,10 @@ class MLOGGER:
 
 
 class tester(MLOGGER):
+
     def __init__(self):
-        MLOGGER.__init__(self,'test',logtype='NONE', filename = 'mylogg.log')
+        MLOGGER.__init__(self, 'test', logtype='NONE', filename='mylogg.log')
+
     def testmethod(self):
         self.error('error test')
         self.debug('debug test')
@@ -80,7 +85,7 @@ class tester(MLOGGER):
 t = tester()
 t.testmethod()
 
-logger= MLOGGER('Test', level=INFO, logtype = 'CONSOLE', filename = 'mylogg.log')
+logger = MLOGGER('Test', level=INFO, logtype='CONSOLE', filename='mylogg.log')
 logger.debug('debug test')
 logger.info('info test')
 logger.warn('warn test')
